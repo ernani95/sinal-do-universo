@@ -17,32 +17,32 @@ const TermsOfUse = ({ onBack }) => {
                         <ShieldCheck className="text-mystic-gold" size={48} />
                     </div>
 
-                    <h1 className="text-3xl md:text-4xl font-display text-center mb-8 uppercase tracking-[0.2em]">Termos de Uso</h1>
+                    <h1 className="text-2xl md:text-4xl font-display text-center mb-8 uppercase tracking-[0.1em] md:tracking-[0.2em] break-words">Termos de Uso</h1>
 
                     <div className="space-y-6 text-mystic-muted leading-relaxed font-body">
                         <section>
-                            <h2 className="text-xl font-display text-white mb-3">1. Apresentação do Serviço</h2>
+                            <h2 className="text-lg md:text-xl font-display text-white mb-3 break-words">1. Apresentação do Serviço</h2>
                             <p>
                                 O site Sinal do Universo é uma plataforma digital dedicada à prática do Tarot e ferramentas de autoconhecimento. Nosso objetivo é oferecer uma experiência de conexão ancestral e clareza divina através de interpretações geradas por inteligência artificial baseadas na tradição dos Arcanos.
                             </p>
                         </section>
 
                         <section>
-                            <h2 className="text-xl font-display text-white mb-3">2. Aceitação dos Termos</h2>
+                            <h2 className="text-lg md:text-xl font-display text-white mb-3 break-words">2. Aceitação dos Termos</h2>
                             <p>
                                 Ao acessar e utilizar este site, você declara estar ciente e de acordo com as condições aqui estabelecidas. Caso não concorde com qualquer parte destes termos, recomendamos que não utilize nossos serviços.
                             </p>
                         </section>
 
                         <section>
-                            <h2 className="text-xl font-display text-white mb-3">3. Natureza do Serviço</h2>
+                            <h2 className="text-lg md:text-xl font-display text-white mb-3 break-words">3. Natureza do Serviço</h2>
                             <p>
                                 As consultas e interpretações oferecidas pelo Sinal do Universo destinam-se exclusivamente a fins de <strong>entretenimento, autoconhecimento e reflexão espiritual</strong>. As mensagens entregues não devem ser interpretadas como verdades absolutas ou previsões deterministas.
                             </p>
                         </section>
 
                         <section>
-                            <h2 className="text-xl font-display text-white mb-3 text-mystic-gold">4. Isenção de Responsabilidade</h2>
+                            <h2 className="text-lg md:text-xl font-display text-white mb-3 text-mystic-gold break-words">4. Isenção de Responsabilidade</h2>
                             <p>
                                 O portal Sinal do Universo não se responsabiliza por decisões tomadas pelo usuário após a leitura. Nossas interpretações <strong>NÃO substituem</strong> aconselhamento profissional especializado, incluindo, mas não se limitando a:
                             </p>
@@ -55,7 +55,7 @@ const TermsOfUse = ({ onBack }) => {
                         </section>
 
                         <section>
-                            <h2 className="text-xl font-display text-white mb-3">5. Uso Adequado da Plataforma</h2>
+                            <h2 className="text-lg md:text-xl font-display text-white mb-3 break-words">5. Uso Adequado da Plataforma</h2>
                             <p>
                                 O usuário compromete-se a utilizar a plataforma de forma lícita e respeitosa. É expressamente proibido:
                             </p>
@@ -67,21 +67,21 @@ const TermsOfUse = ({ onBack }) => {
                         </section>
 
                         <section>
-                            <h2 className="text-xl font-display text-white mb-3">6. Direitos Autorais</h2>
+                            <h2 className="text-lg md:text-xl font-display text-white mb-3 break-words">6. Direitos Autorais</h2>
                             <p>
                                 Todo o conteúdo visual, textos, logotipos e o sistema de interpretação são de propriedade exclusiva do Sinal do Universo e estão protegidos pelas leis de propriedade intelectual vigentes no Brasil.
                             </p>
                         </section>
 
                         <section>
-                            <h2 className="text-xl font-display text-white mb-3">7. Alterações de Termos</h2>
+                            <h2 className="text-lg md:text-xl font-display text-white mb-3 break-words">7. Alterações de Termos</h2>
                             <p>
                                 Reservamo-nos o direito de atualizar estes Termos de Uso periodicamente para refletir melhorias no serviço ou mudanças na legislação. O uso continuado do site após tais alterações constitui sua aceitação dos novos termos.
                             </p>
                         </section>
 
                         <section>
-                            <h2 className="text-xl font-display text-white mb-3">8. Foro e Legislação</h2>
+                            <h2 className="text-lg md:text-xl font-display text-white mb-3 break-words">8. Foro e Legislação</h2>
                             <p>
                                 Estes termos são regidos pelas leis da República Federativa do Brasil. Para dirimir quaisquer dúvidas ou litígios decorrentes deste documento, fica eleito o foro da comarca de residência do usuário ou, na impossibilidade, o foro central do Brasil.
                             </p>
