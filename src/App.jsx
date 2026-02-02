@@ -1,4 +1,4 @@
-import './index.css'
+import React, { useState, useEffect } from 'react'
 import Hero from './components/Hero'
 import TarotForm from './components/TarotForm'
 import HowItWorks from './components/HowItWorks'
@@ -8,12 +8,55 @@ import Pricing from './components/Pricing'
 import FAQ from './components/FAQ'
 import UrgencyBlock from './components/UrgencyBlock'
 import Footer from './components/Footer'
+import TermsOfUse from './components/TermsOfUse'
+import PrivacyPolicy from './components/PrivacyPolicy'
+import Contact from './components/Contact'
 
 function App() {
+  const [currentPage, setCurrentPage] = useState('main');
+
   const scrollToReading = () => {
-    const element = document.getElementById('reading');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    if (currentPage !== 'main') {
+      setCurrentPage('main');
+      // Small delay to allow main page to render before scrolling
+      setTimeout(() => {
+        const element = document.getElementById('reading');
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const element = document.getElementById('reading');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  // Scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
+  const renderContent = () => {
+    switch (currentPage) {
+      case 'terms':
+        return <TermsOfUse onBack={() => setCurrentPage('main')} />;
+      case 'privacy':
+        return <PrivacyPolicy onBack={() => setCurrentPage('main')} />;
+      case 'contact':
+        return <Contact onBack={() => setCurrentPage('main')} />;
+      default:
+        return (
+          <>
+            <Hero onStart={scrollToReading} />
+            <TarotForm />
+            <HowItWorks />
+            <Benefits />
+            <Differentials />
+            <Pricing />
+            <FAQ />
+            <UrgencyBlock onAction={scrollToReading} />
+          </>
+        );
     }
   };
 
@@ -34,18 +77,11 @@ function App() {
         </div>
       </header>
 
-      <main className="flex-grow pt-24">
-        <Hero onStart={scrollToReading} />
-        <TarotForm />
-        <HowItWorks />
-        <Benefits />
-        <Differentials />
-        <Pricing />
-        <FAQ />
-        <UrgencyBlock onAction={scrollToReading} />
+      <main className={`flex-grow ${currentPage === 'main' ? 'pt-24' : ''}`}>
+        {renderContent()}
       </main>
 
-      <Footer />
+      <Footer onNavigate={setCurrentPage} />
     </div>
   )
 }

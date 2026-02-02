@@ -64,45 +64,41 @@ const Pricing = () => {
                     </div>
 
                     {/* Paid Plan */}
-                    <div className="p-8 md:p-10 rounded-[2rem] border-2 border-mystic-gold bg-mystic-deep/80 relative transform md:-translate-y-4 shadow-[0_0_40px_rgba(255,215,0,0.15)] flex flex-col justify-between">
+                    <div className="p-8 md:p-10 rounded-[2rem] border-2 border-mystic-gold bg-mystic-deep/80 relative transform md:-translate-y-4 shadow-[0_0_40px_rgba(234,179,8,0.2)] flex flex-col justify-between">
                         <div className="absolute top-0 right-1/2 translate-x-1/2 md:translate-x-0 md:right-8 -mt-5">
-                            <span className="bg-mystic-gold text-mystic-deep text-xs font-bold uppercase tracking-widest py-2 px-4 rounded-full flex items-center gap-2 shadow-lg whitespace-nowrap">
-                                <Star size={14} fill="currentColor" /> Recomendado
+                            <span className="bg-mystic-gold text-mystic-deep text-xs font-bold uppercase tracking-widest py-2 px-6 rounded-full flex items-center gap-2 shadow-lg whitespace-nowrap">
+                                ⭐ RECOMENDADO
                             </span>
                         </div>
 
                         <div>
                             <div className="flex items-center gap-2 mb-2">
-                                <h3 className="text-2xl font-display font-bold text-white">Jornada Completa</h3>
+                                <h3 className="text-2xl font-display font-bold text-white uppercase tracking-wider">Sinal Completo</h3>
                                 <Sparkles size={20} className="text-mystic-gold animate-pulse" />
                             </div>
-                            <p className="text-mystic-muted text-sm mb-8 h-10">Desbloqueie clareza total e direcionamento profundo.</p>
+                            <p className="text-mystic-gold/80 italic text-sm mb-8 h-10 font-bold">A resposta que você sente que precisa — revelada agora</p>
 
                             <div className="flex items-end gap-3 mb-8">
-                                <div className="text-5xl font-bold text-mystic-gold">R$ 14,90</div>
-                                <div className="text-gray-500 text-lg line-through mb-1 decoration-1">R$ 97,00</div>
+                                <div className="text-5xl font-bold text-white">R$ 14,90</div>
+                                <div className="text-gray-500 text-xl line-through mb-1 decoration-1">R$ 97,00</div>
                             </div>
 
                             <ul className="space-y-4 mb-8">
-                                <li className="flex gap-3 text-base items-start">
-                                    <div className="bg-mystic-gold p-1 rounded-full flex-shrink-0 mt-0.5"><Check size={14} className="text-mystic-deep" /></div>
-                                    <span className="font-bold text-white">Interpretação Profunda e Acolhedora</span>
+                                <li className="flex gap-3 text-sm items-start">
+                                    <div className="bg-mystic-gold/20 p-1 rounded-full flex-shrink-0 mt-0.5"><Check size={14} className="text-mystic-gold" /></div>
+                                    <span className="text-gray-200">Interpretação profunda e personalizada para a sua pergunta</span>
                                 </li>
-                                <li className="flex gap-3 text-base items-start">
-                                    <div className="bg-mystic-gold p-1 rounded-full flex-shrink-0 mt-0.5"><Check size={14} className="text-mystic-deep" /></div>
-                                    <span className="text-gray-200">Conselho do Tarô (O que fazer agora)</span>
+                                <li className="flex gap-3 text-sm items-start">
+                                    <div className="bg-mystic-gold/20 p-1 rounded-full flex-shrink-0 mt-0.5"><Check size={14} className="text-mystic-gold" /></div>
+                                    <span className="text-gray-200">Leitura emocional + energética + prática</span>
                                 </li>
-                                <li className="flex gap-3 text-base items-start">
-                                    <div className="bg-mystic-gold p-1 rounded-full flex-shrink-0 mt-0.5"><Check size={14} className="text-mystic-deep" /></div>
-                                    <span className="text-gray-200">Tiragens ilimitadas por 30 dias</span>
+                                <li className="flex gap-3 text-sm items-start">
+                                    <div className="bg-mystic-gold/20 p-1 rounded-full flex-shrink-0 mt-0.5"><Check size={14} className="text-mystic-gold" /></div>
+                                    <span className="text-gray-200">O que está acontecendo nos bastidores da situação</span>
                                 </li>
-                                <li className="flex gap-3 text-base items-start">
-                                    <div className="bg-mystic-gold p-1 rounded-full flex-shrink-0 mt-0.5"><Check size={14} className="text-mystic-deep" /></div>
-                                    <span className="text-gray-200">Histórico completo de leituras</span>
-                                </li>
-                                <li className="flex gap-3 text-base items-start">
-                                    <div className="bg-mystic-gold p-1 rounded-full flex-shrink-0 mt-0.5"><Check size={14} className="text-mystic-deep" /></div>
-                                    <span className="text-gray-200">Receba por e-mail para consultar sempre</span>
+                                <li className="flex gap-3 text-sm items-start">
+                                    <div className="bg-mystic-gold/20 p-1 rounded-full flex-shrink-0 mt-0.5"><Check size={14} className="text-mystic-gold" /></div>
+                                    <span className="text-gray-200">Qual atitude tomar para evitar arrependimento</span>
                                 </li>
                             </ul>
                         </div>
@@ -110,13 +106,12 @@ const Pricing = () => {
                         <div>
                             <button
                                 onClick={handlePaid}
-                                className="btn-primary w-full shadow-xl hover:shadow-2xl"
+                                className="btn-primary w-full shadow-xl hover:shadow-2xl text-lg py-5"
                             >
-                                Desbloquear Minha Jornada
-                                <ArrowRight size={20} />
+                                👉 DESBLOQUEAR MEU SINAL AGORA
                             </button>
-                            <p className="text-center text-xs text-mystic-muted mt-4 opacity-70">
-                                Menos que um lanche. Mais que uma resposta.
+                            <p className="text-center text-xs text-mystic-muted mt-6 italic font-medium">
+                                Menos que um lanche. Mais clareza do que semanas de dúvida.
                             </p>
                         </div>
                     </div>
