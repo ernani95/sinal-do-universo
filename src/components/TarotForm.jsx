@@ -76,9 +76,8 @@ const TarotForm = () => {
             }
         } catch (error) {
             console.error("Erro na API:", error);
-            // Fallback for demo/testing if server is offline
-            setShowLeadModal(false);
-            startReadingRitual();
+            const errorMessage = error.response?.data?.error || error.message;
+            alert(`Erro ao conectar com o serviço astral: ${errorMessage}. Por favor, verifique se o servidor está online.`);
         }
     };
 

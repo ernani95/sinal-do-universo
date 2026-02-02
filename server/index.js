@@ -103,7 +103,7 @@ app.post('/api/payments/create-pix', async (req, res) => {
             .from('readings')
             .update({
                 stripe_session_id: transId, // Fallback to existing column
-                status: 'PAYMENT_PENDING'
+                status: 'PENDING' // Use valid enum value from schema.sql
             })
             .eq('id', readingId);
 
