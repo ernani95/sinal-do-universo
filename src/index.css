@@ -1,0 +1,159 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap');
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: #1a0b2e;
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image:
+    linear-gradient(to bottom, rgba(26, 11, 46, 0.8), rgba(15, 5, 24, 0.95)),
+    url('./assets/mystic-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+:root {
+  --fluid-h1: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  --fluid-h2: clamp(2rem, 4vw + 1rem, 3.5rem);
+  --fluid-h3: clamp(1.5rem, 3vw + 1rem, 2.5rem);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+}
+
+h1 {
+  font-size: var(--fluid-h1);
+}
+
+h2 {
+  font-size: var(--fluid-h2);
+}
+
+h3 {
+  font-size: var(--fluid-h3);
+}
+
+.btn-primary {
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+  font-size: 1.125rem;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ffd700, #d4af37);
+  color: #1a0b2e;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.container-custom {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+@media (max-width: 640px) {
+  .container-custom {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #ffffff, #ffd700, #ffffff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.text-mystic-gold {
+  color: #ffd700;
+}
+
+.text-mystic-muted {
+  color: #b0b0d0;
+}
+
+.bg-mystic-deep {
+  background-color: #1a0b2e;
+}
+
+.bg-mystic-dark {
+  background-color: #0f0518;
+}
+
+.bg-mystic-gold {
+  background-color: #ffd700;
+}
+
+.border-mystic-gold {
+  border-color: #ffd700;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
