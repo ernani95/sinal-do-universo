@@ -28,7 +28,6 @@ const TarotForm = () => {
     // Payment States
     const [pixData, setPixData] = useState(null);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
-    const [paymentStatus, setPaymentStatus] = useState('PENDING'); // PENDING, PAID
 
     const handleStart = () => {
         if (!question.trim()) return;
@@ -84,7 +83,11 @@ const TarotForm = () => {
     };
 
     const handleCreatePix = async () => {
-        if (!readingId) return;
+        if (!readingId) {
+            console.error("Erro: readingId não encontrado. O lead pode não ter sido salvo.");
+            alert("Houve um problema de conexão com o servidor. Por favor, recarregue a página e tente novamente.");
+            return;
+        }
         setIsGenerating(true);
         try {
             const response = await axios.post(`${API_BASE_URL}/api/payments/create-pix`, { readingId });
@@ -110,7 +113,7 @@ const TarotForm = () => {
                 const response = await axios.get(`${API_BASE_URL}/api/payments/status/${rid}`);
                 if (response.data.status === 'PAID') {
                     clearInterval(interval);
-                    setPaymentStatus('PAID');
+                    // setPaymentStatus('PAID'); // Removed as per instruction
                     setShowPaymentModal(false);
                     // Automatically trigger interpretation once paid
                     handleFetchResult(rid);
@@ -143,6 +146,13 @@ const TarotForm = () => {
 
     const startReadingRitual = () => {
         setStep(3);
+        // Ensure focus on the reading section after modal closes
+        setTimeout(() => {
+            const element = document.getElementById('reading');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 100);
         const messages = [
             "Conectando com sua energia...",
             "Sintonizando a vibração da sua pergunta...",
@@ -171,13 +181,6 @@ const TarotForm = () => {
                 return prev + 2;
             });
         }, 80);
-    };
-
-    const scrollToPricing = () => {
-        const element = document.getElementById('pricing-section');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
     };
 
     return (
@@ -428,93 +431,47 @@ const TarotForm = () => {
                                 </div>
                             </div>
 
-                            {/* Paywall Action Block (Enhanced Offer Card) */}
-                            <div className="bg-gradient-to-br from-mystic-deep/90 to-black border-2 border-mystic-gold rounded-[2rem] p-8 md:p-10 w-full max-w-2xl relative overflow-hidden shadow-[0_0_60px_rgba(234,179,8,0.2)]">
-                                {/* Recommendation Badge */}
-                                <div className="absolute top-0 right-1/2 translate-x-1/2 md:translate-x-0 md:right-8 -mt-4 z-20">
-                                    <span className="bg-mystic-gold text-mystic-deep text-xs font-bold uppercase tracking-widest py-2 px-6 rounded-full flex items-center gap-2 shadow-lg">
-                                        ⭐ RECOMENDADO
-                                    </span>
-                                </div>
-
-                                <div className="text-center mb-8 relative z-10">
-                                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 font-display uppercase tracking-widest">Sinal Completo do Universo</h2>
-                                    <p className="text-mystic-gold font-medium italic text-lg opacity-90">
-                                        A resposta que você sente que precisa — revelada agora
-                                    </p>
-                                </div>
-
-                                <div className="flex justify-center items-end gap-3 mb-8 relative z-10">
-                                    <div className="text-5xl font-bold text-white">R$ 14,90</div>
-                                    <div className="text-gray-500 text-xl line-through mb-1">R$ 97,00</div>
-                                </div>
-
-                                <div className="space-y-4 mb-10 relative z-10">
-                                    <h4 className="text-white font-bold flex items-center gap-2 mb-4 justify-center md:justify-start">
-                                        💫 O que você recebe imediatamente após o pagamento:
-                                    </h4>
-                                    <ul className="grid grid-cols-1 md:grid-cols-1 gap-3 text-left max-w-md mx-auto md:mx-0">
-                                        <li className="flex items-start gap-3">
-                                            <div className="bg-mystic-gold/20 p-1 rounded-full mt-1"><Check size={14} className="text-mystic-gold" /></div>
-                                            <span className="text-gray-200 text-sm md:text-base">Interpretação profunda e personalizada para a sua pergunta</span>
-                                        </li>
-                                        <li className="flex items-start gap-3">
-                                            <div className="bg-mystic-gold/20 p-1 rounded-full mt-1"><Check size={14} className="text-mystic-gold" /></div>
-                                            <span className="text-gray-200 text-sm md:text-base">Leitura emocional + energética + prática</span>
-                                        </li>
-                                        <li className="flex items-start gap-3">
-                                            <div className="bg-mystic-gold/20 p-1 rounded-full mt-1"><Check size={14} className="text-mystic-gold" /></div>
-                                            <span className="text-gray-200 text-sm md:text-base">O que está acontecendo nos bastidores da situação</span>
-                                        </li>
-                                        <li className="flex items-start gap-3">
-                                            <div className="bg-mystic-gold/20 p-1 rounded-full mt-1"><Check size={14} className="text-mystic-gold" /></div>
-                                            <span className="text-gray-200 text-sm md:text-base">O que você não está enxergando agora</span>
-                                        </li>
-                                        <li className="flex items-start gap-3">
-                                            <div className="bg-mystic-gold/20 p-1 rounded-full mt-1"><Check size={14} className="text-mystic-gold" /></div>
-                                            <span className="text-gray-200 text-sm md:text-base">Qual atitude tomar para evitar arrependimento</span>
-                                        </li>
-                                        <li className="flex items-start gap-3">
-                                            <div className="bg-mystic-gold/20 p-1 rounded-full mt-1"><Check size={14} className="text-mystic-gold" /></div>
-                                            <span className="text-gray-200 text-sm md:text-base">Mensagem final do Universo para este momento</span>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div className="space-y-3 mb-10 text-center relative z-10">
-                                    <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-400 font-medium">
-                                        <span className="flex items-center gap-2">🔓 Tudo é desbloqueado na hora</span>
-                                        <span className="flex items-center gap-2">📱 Sem PDF</span>
-                                        <span className="flex items-center gap-2">📩 Sem esperar e-mail</span>
+                            {/* Paywall Action Block */}
+                            <div className="bg-gradient-to-br from-mystic-deep to-black border border-mystic-gold/30 rounded-2xl p-6 md:p-8 w-full max-w-3xl relative overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                                <div className="flex flex-col md:flex-row items-center gap-6 relative z-10">
+                                    <div className="flex-shrink-0 bg-mystic-gold/10 p-4 rounded-full border border-mystic-gold/20 animate-pulse-slow">
+                                        <Lock className="text-mystic-gold" size={32} />
                                     </div>
-                                    <p className="text-mystic-gold/80 text-sm font-bold animate-pulse">
-                                        ⚡ A resposta aparece assim que o pagamento é confirmado.
-                                    </p>
+                                    <div className="flex-1 text-center md:text-left">
+                                        <h3 className="text-xl md:text-2xl font-bold text-white mb-2 leading-tight">
+                                            Não tome nenhuma decisão ainda.
+                                        </h3>
+                                        <p className="text-gray-300 text-base md:text-lg mb-0">
+                                            O Universo mostrou que <span className="text-mystic-gold font-bold">{readingCards[1]?.name || "uma força oculta"}</span> está bloqueando seu caminho. Apenas a leitura completa revela como usar a energia de <span className="text-mystic-gold font-bold">{readingCards[2]?.name || "seu destino"}</span> para resolver isso definitivamente.
+                                        </p>
+                                    </div>
                                 </div>
 
-                                <div className="text-center italic text-gray-400 mb-8 relative z-10">
-                                    💬 “Você não chegou até aqui por acaso.”
-                                </div>
-
-                                <div className="flex flex-col items-center relative z-10">
+                                <div className="mt-8 flex flex-col items-center">
                                     <button
-                                        onClick={handleCreatePix}
+                                        onClick={() => {
+                                            console.log("PIX Button clicked, readingId:", readingId);
+                                            handleCreatePix();
+                                        }}
                                         disabled={isGenerating}
                                         id="unlock-btn"
-                                        className="btn-primary w-full md:w-auto text-xl px-12 py-5 shadow-[0_0_30px_rgba(234,179,8,0.4)] hover:shadow-[0_0_50px_rgba(234,179,8,0.6)] transform transition-transform hover:scale-105 flex items-center justify-center gap-3 group disabled:opacity-70"
+                                        className="btn-primary w-full md:w-auto text-xl px-12 py-5 shadow-[0_0_30px_rgba(255,215,0,0.3)] hover:shadow-[0_0_50px_rgba(255,215,0,0.5)] transform transition-transform hover:scale-105 flex items-center justify-center gap-3 group disabled:opacity-70 disabled:cursor-not-allowed"
                                     >
                                         <Sparkles size={24} className={isGenerating ? "animate-spin" : "hidden group-hover:block animate-spin"} />
                                         {isGenerating ? "Processando..." : "👉 DESBLOQUEAR MEU SINAL AGORA"}
                                     </button >
-                                    <p className="mt-6 text-sm text-mystic-muted font-medium italic">
-                                        Menos que um lanche. Mais clareza do que semanas de dúvida.
-                                    </p>
+                                    <div className="mt-4 flex flex-col items-center gap-2">
+                                        <div className="text-2xl font-bold text-white">R$ 14,90</div>
+                                        <p className="text-xs text-mystic-muted flex items-center gap-2">
+                                            <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                                            Acesso imediato e vitalício à sua resposta
+                                        </p>
+                                    </div>
                                 </div >
 
                                 {/* Background decoration */}
-                                <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-mystic-gold opacity-10 blur-[100px] rounded-full pointer-events-none"></div>
-                                <div className="absolute -top-10 -left-10 w-64 h-64 bg-mystic-gold opacity-5 blur-[100px] rounded-full pointer-events-none"></div>
-                            </div >
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-mystic-gold opacity-5 blur-[80px] rounded-full pointer-events-none"></div>
+                            </div>
                         </div >
                     )}
 

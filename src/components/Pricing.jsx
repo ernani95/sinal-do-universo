@@ -10,9 +10,15 @@ const Pricing = () => {
     };
 
     const handlePaid = () => {
-        const element = document.getElementById('reading');
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+        // Try to scroll directly to the unlock button if the user is already at the results step
+        const unlockBtn = document.getElementById('unlock-btn');
+        if (unlockBtn) {
+            unlockBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            const element = document.getElementById('reading');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
         }
     };
 
