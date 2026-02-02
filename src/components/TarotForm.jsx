@@ -4,7 +4,16 @@ import axios from 'axios';
 import tarotBack from '../assets/tarot-back.png';
 import { majorArcana } from '../data/tarotCards';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const getApiBaseUrl = () => {
+    let url = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    url = url.replace(/\/+$/, ''); // Remove trailing slashes
+    if (url.endsWith('/api')) {
+        url = url.slice(0, -4); // Remove /api suffix if user added it by mistake
+    }
+    return url;
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const TarotForm = () => {
     const [question, setQuestion] = useState('');
@@ -13,6 +22,14 @@ const TarotForm = () => {
     const [loadingText, setLoadingText] = useState('Conectando com sua energia...');
     const [progress, setProgress] = useState(0);
     const [showLeadModal, setShowLeadModal] = useState(false);
+
+    // Initial Debug
+    React.useEffect(() => {
+        console.log("🔍 Astral Service URL:", API_BASE_URL);
+        if (API_BASE_URL === 'http://localhost:3000' && window.location.hostname !== 'localhost') {
+            console.warn("⚠️ API_BASE_URL está usando o padrão localhost em produção!");
+        }
+    }, []);
 
     // Reading State
     const [readingCards, setReadingCards] = useState([]);
@@ -75,9 +92,10 @@ const TarotForm = () => {
                 alert("Erro ao salvar dados. Tente novamente.");
             }
         } catch (error) {
-            console.error("Erro na API:", error);
+            console.error("❌ Erro na API (init):", error);
             const errorMessage = error.response?.data?.error || error.message;
-            alert(`Erro ao conectar com o serviço astral: ${errorMessage}. Por favor, verifique se o servidor está online.`);
+            const fullUrl = `${API_BASE_URL}/api/readings/init`;
+            alert(`Erro ao conectar com o serviço astral: ${errorMessage}\n\nURL tentada: ${fullUrl}\n\nPor favor, verifique se a VITE_API_URL está correta no Netlify.`);
         }
     };
 
