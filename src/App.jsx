@@ -70,9 +70,6 @@ function App() {
               SINAL DO UNIVERSO
               <span className="w-8 h-px bg-mystic-gold/30 hidden md:block"></span>
             </div>
-            <div className="text-[10px] md:text-xs text-mystic-gold/60 tracking-[0.5em] uppercase mt-1 font-medium">
-              Conexão Ancestral • Clareza Divina
-            </div>
           </div>
         </div>
       </header>

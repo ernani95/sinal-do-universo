@@ -10,8 +10,10 @@ const Pricing = () => {
     };
 
     const handlePaid = () => {
-        // Placeholder for payment logic
-        console.log("Fluxo de pagamento");
+        const element = document.getElementById('reading');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
     };
 
     return (

@@ -25,17 +25,17 @@ const Contact = ({ onBack }) => {
                         Seja para tirar dúvidas sobre sua leitura, questões técnicas ou apenas para compartilhar sua experiência, estamos de braços abertos para te ouvir.
                     </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-                        <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                            <Clock className="text-mystic-gold mx-auto mb-3" size={24} />
-                            <h3 className="font-display text-white mb-1 uppercase tracking-wider text-sm">Horário de Atendimento</h3>
-                            <p className="text-mystic-muted text-sm">Segunda a Sexta<br />09h às 18h</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-12">
+                        <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center text-center">
+                            <Clock className="text-mystic-gold mb-3" size={20} />
+                            <h3 className="font-display text-white mb-2 uppercase tracking-wider text-xs md:text-sm">Horário de Atendimento</h3>
+                            <p className="text-mystic-muted text-xs md:text-sm leading-relaxed">Segunda a Sexta<br />09h às 18h</p>
                         </div>
 
-                        <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
-                            <MessageCircle className="text-mystic-gold mx-auto mb-3" size={24} />
-                            <h3 className="font-display text-white mb-1 uppercase tracking-wider text-sm">Forma de Contato</h3>
-                            <p className="text-mystic-muted text-sm">Principalmente via<br />WhatsApp</p>
+                        <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center text-center">
+                            <MessageCircle className="text-mystic-gold mb-3" size={20} />
+                            <h3 className="font-display text-white mb-2 uppercase tracking-wider text-xs md:text-sm">Forma de Contato</h3>
+                            <p className="text-mystic-muted text-xs md:text-sm leading-relaxed">Principalmente via<br />WhatsApp</p>
                         </div>
                     </div>
 
