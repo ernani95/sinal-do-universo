@@ -93,7 +93,6 @@ const TarotForm = () => {
                     content_category: 'Tarot Reading',
                     num_items: 1
                 }],
-                value: 0,
                 currency: 'BRL',
                 status: 'viewed'
             });
@@ -144,7 +143,6 @@ const TarotForm = () => {
                             content_name: 'Tarot Reading Lead Form',
                             content_category: 'Tarot Reading'
                         }],
-                        value: 0,
                         currency: 'BRL',
                         status: 'completed'
                     });
