@@ -30,15 +30,28 @@ const amplopay = require('./amplopayService');
 const { generateInterpretation } = require('./geminiService');
 const { testTikTokEventsAPI } = require('./tiktokEventsService');
 
+const BUILD_TIMESTAMP = new Date().toISOString();
+
 // Routes
 // 1. Health Check
 app.get('/', (req, res) => {
     res.json({
         status: 'online',
         message: 'Sinal do Universo API is running',
-        version: '1.0.0'
+        version: '1.0.1',
+        build_time: BUILD_TIMESTAMP,
+        env: process.env.NODE_ENV
     });
 });
+
+function logRoutes() {
+    console.log('🛣️  Registered Routes:');
+    app._router.stack.forEach(r => {
+        if (r.route && r.route.path) {
+            console.log(`${Object.keys(r.route.methods).join(', ').toUpperCase()} ${r.route.path}`);
+        }
+    });
+}
 
 // 2. Reading Initialization
 app.post('/api/readings/init', async (req, res) => {
@@ -275,4 +288,5 @@ app.post('/api/tiktok/test-event', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`\n🚀 Server running on http://localhost:${PORT}`);
     console.log(`🔒 Environment: ${process.env.NODE_ENV || 'development'}`);
+    logRoutes();
 });
