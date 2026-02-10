@@ -15,7 +15,7 @@ function sha256(data) {
 
 /**
  * Send event to TikTok Events API (Server-Side)
- * Refactored to match specific user instructions
+ * Using proven working structure (Batch format with data array)
  */
 async function sendTikTokEvent(eventData, testEventCode = null) {
     if (!TIKTOK_ACCESS_TOKEN) {
@@ -23,13 +23,12 @@ async function sendTikTokEvent(eventData, testEventCode = null) {
     }
 
     try {
-        // Prepare User Data (Customer Information Parameters)
+        // Prepare User Data
         const userData = {
             ip: eventData.ip || '127.0.0.1',
             user_agent: eventData.user_agent || 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         };
 
-        // Add hashed PII if available
         if (eventData.user) {
             if (eventData.user.email) userData.email = eventData.user.email;
             if (eventData.user.phone_number) userData.phone = eventData.user.phone_number;
@@ -38,20 +37,17 @@ async function sendTikTokEvent(eventData, testEventCode = null) {
             if (eventData.user.ttp) userData.ttp = eventData.user.ttp;
         }
 
-        // Prepare Properties (Event Parameters)
-        // Includes: value, currency, content_*, status, url, etc.
+        // Prepare Properties
         const properties = {
             ...(eventData.properties || {}),
         };
 
-        // Ensure URL is in properties if provided at top level or properties
         if (eventData.page_url && !properties.url) {
             properties.url = eventData.page_url;
         }
 
-        // Construct Final Payload
-        const payload = {
-            pixel_code: TIKTOK_PIXEL_ID,
+        // Construct Event Object
+        const eventObject = {
             event: eventData.event_name,
             event_id: eventData.event_id || `evt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
             event_time: Math.floor(Date.now() / 1000),
@@ -59,12 +55,18 @@ async function sendTikTokEvent(eventData, testEventCode = null) {
             properties: properties
         };
 
-        // Add test event code if provided
+        // Construct Final Batch Payload
+        const payload = {
+            event_source: 'web',
+            event_source_id: TIKTOK_PIXEL_ID,
+            data: [eventObject]
+        };
+
         if (testEventCode) {
             payload.test_event_code = testEventCode;
         }
 
-        console.log('📤 Sending to TikTok Events API (v1.3):');
+        console.log('📤 Sending to TikTok Events API (v1.3 Batch):');
         console.log(JSON.stringify(payload, null, 2));
 
         const response = await axios.post(TIKTOK_API_URL, payload, {
@@ -75,11 +77,7 @@ async function sendTikTokEvent(eventData, testEventCode = null) {
         });
 
         console.log('✅ TikTok Event sent successfully!');
-        if (response.data && response.data.code !== 0) {
-            console.warn('⚠️ Warning from TikTok:', JSON.stringify(response.data));
-        } else {
-            console.log('📊 Response OK:', JSON.stringify(response.data));
-        }
+        console.log('📊 Response:', JSON.stringify(response.data));
 
         return response.data;
     } catch (error) {
@@ -104,7 +102,7 @@ async function testTikTokEventsAPI(testEventCode) {
     // Test CompleteRegistration event
     const testEvent = {
         event_name: 'CompleteRegistration',
-        user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         ip: '127.0.0.1',
         page_url: 'https://sinaldouniverso.netlify.app/test-page',
         properties: {
