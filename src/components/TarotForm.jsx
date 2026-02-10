@@ -15,6 +15,31 @@ const getApiBaseUrl = () => {
 
 const API_BASE_URL = getApiBaseUrl();
 
+// SHA-256 hash function for TikTok Pixel PII data
+const sha256 = async (message) => {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+};
+
+// TikTok Pixel: Identify user with hashed PII
+const identifyUserForTikTok = async (email, phone) => {
+    if (window.ttq && email && phone) {
+        try {
+            const hashedEmail = await sha256(email.toLowerCase().trim());
+            const hashedPhone = await sha256(phone.replace(/\D/g, '')); // Remove non-digits
+
+            window.ttq.identify({
+                email: hashedEmail,
+                phone_number: hashedPhone
+            });
+        } catch (error) {
+            console.error('Error hashing PII for TikTok:', error);
+        }
+    }
+};
+
 const TarotForm = () => {
     const [question, setQuestion] = useState('');
     const [selectedCards, setSelectedCards] = useState(1);
@@ -57,6 +82,22 @@ const TarotForm = () => {
 
     const handleRevealClick = () => {
         setShowLeadModal(true);
+
+        // TikTok Pixel: ViewContent (when user views lead form)
+        if (window.ttq) {
+            window.ttq.track('ViewContent', {
+                contents: [{
+                    content_id: 'tarot-reading-lead-form',
+                    content_type: 'product',
+                    content_name: 'Tarot Reading Lead Form',
+                    content_category: 'Tarot Reading',
+                    num_items: 1
+                }],
+                value: 0,
+                currency: 'BRL',
+                status: 'viewed'
+            });
+        }
     };
 
     const submitLeadAndStart = async (e) => {
@@ -86,13 +127,20 @@ const TarotForm = () => {
                 console.log('✅ Lead saved, ID:', response.data.readingId);
                 setReadingId(response.data.readingId);
 
-                // TikTok Pixel: CompleteRegistration
+                // TikTok Pixel: Identify user and track CompleteRegistration
+                identifyUserForTikTok(leadEmail, leadPhone);
+
                 if (window.ttq) {
                     window.ttq.track('CompleteRegistration', {
-                        content_name: 'Lead Form Submission',
-                        content_category: 'Tarot Reading',
+                        contents: [{
+                            content_id: 'tarot-reading-lead',
+                            content_type: 'product',
+                            content_name: 'Tarot Reading Lead Form',
+                            content_category: 'Tarot Reading'
+                        }],
                         value: 0,
-                        currency: 'BRL'
+                        currency: 'BRL',
+                        status: 'completed'
                     });
                 }
 
@@ -119,10 +167,16 @@ const TarotForm = () => {
         // TikTok Pixel: InitiateCheckout
         if (window.ttq) {
             window.ttq.track('InitiateCheckout', {
-                content_name: 'Tarot Reading Unlock',
-                content_category: 'Tarot Reading',
+                contents: [{
+                    content_id: 'tarot-reading-full',
+                    content_type: 'product',
+                    content_name: 'Tarot Reading - Full Interpretation',
+                    content_category: 'Tarot Reading',
+                    num_items: 1
+                }],
                 value: 14.90,
-                currency: 'BRL'
+                currency: 'BRL',
+                status: 'initiated'
             });
         }
 
@@ -152,13 +206,30 @@ const TarotForm = () => {
                 if (response.data.status === 'PAID') {
                     clearInterval(interval);
 
-                    // TikTok Pixel: CompletePayment
+                    // TikTok Pixel: CompletePayment (Purchase)
                     if (window.ttq) {
                         window.ttq.track('CompletePayment', {
-                            content_name: 'Tarot Reading Purchase',
-                            content_category: 'Tarot Reading',
+                            contents: [{
+                                content_id: 'tarot-reading-full',
+                                content_type: 'product',
+                                content_name: 'Tarot Reading - Full Interpretation',
+                                content_category: 'Tarot Reading'
+                            }],
                             value: 14.90,
-                            currency: 'BRL'
+                            currency: 'BRL',
+                            status: 'completed'
+                        });
+
+                        // Also track as PlaceAnOrder for TikTok optimization
+                        window.ttq.track('PlaceAnOrder', {
+                            contents: [{
+                                content_id: 'tarot-reading-full',
+                                content_type: 'product',
+                                content_name: 'Tarot Reading - Full Interpretation'
+                            }],
+                            value: 14.90,
+                            currency: 'BRL',
+                            status: 'completed'
                         });
                     }
 
