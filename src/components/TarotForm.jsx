@@ -86,6 +86,16 @@ const TarotForm = () => {
                 console.log('✅ Lead saved, ID:', response.data.readingId);
                 setReadingId(response.data.readingId);
 
+                // TikTok Pixel: CompleteRegistration
+                if (window.ttq) {
+                    window.ttq.track('CompleteRegistration', {
+                        content_name: 'Lead Form Submission',
+                        content_category: 'Tarot Reading',
+                        value: 0,
+                        currency: 'BRL'
+                    });
+                }
+
                 setShowLeadModal(false);
                 startReadingRitual();
             } else {
@@ -105,6 +115,17 @@ const TarotForm = () => {
             alert("Houve um problema de conexão com o servidor. Por favor, recarregue a página e tente novamente.");
             return;
         }
+
+        // TikTok Pixel: InitiateCheckout
+        if (window.ttq) {
+            window.ttq.track('InitiateCheckout', {
+                content_name: 'Tarot Reading Unlock',
+                content_category: 'Tarot Reading',
+                value: 14.90,
+                currency: 'BRL'
+            });
+        }
+
         setIsGenerating(true);
         try {
             const response = await axios.post(`${API_BASE_URL}/api/payments/create-pix`, { readingId });
@@ -130,6 +151,17 @@ const TarotForm = () => {
                 const response = await axios.get(`${API_BASE_URL}/api/payments/status/${rid}`);
                 if (response.data.status === 'PAID') {
                     clearInterval(interval);
+
+                    // TikTok Pixel: CompletePayment
+                    if (window.ttq) {
+                        window.ttq.track('CompletePayment', {
+                            content_name: 'Tarot Reading Purchase',
+                            content_category: 'Tarot Reading',
+                            value: 14.90,
+                            currency: 'BRL'
+                        });
+                    }
+
                     // setPaymentStatus('PAID'); // Removed as per instruction
                     setShowPaymentModal(false);
                     // Automatically trigger interpretation once paid
