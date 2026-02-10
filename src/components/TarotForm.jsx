@@ -128,7 +128,13 @@ const TarotForm = () => {
                 setReadingId(response.data.readingId);
 
                 // TikTok Pixel: Identify user and track CompleteRegistration
-                identifyUserForTikTok(leadEmail, leadPhone);
+                try {
+                    identifyUserForTikTok(leadEmail, leadPhone).catch(err => {
+                        console.error('TikTok identify error (non-blocking):', err);
+                    });
+                } catch (error) {
+                    console.error('TikTok identify error (non-blocking):', error);
+                }
 
                 if (window.ttq) {
                     window.ttq.track('CompleteRegistration', {
