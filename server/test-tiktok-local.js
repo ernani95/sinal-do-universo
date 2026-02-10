@@ -13,13 +13,11 @@ function sha256(data) {
 }
 
 async function runTest() {
-    console.log('🚀 Iniciando teste com event_source: web...');
+    console.log('🚀 Iniciando teste com estrutura idêntica ao Payload Helper...');
 
     const payload = {
-        event_source: 'web', // ADICIONADO
-        event_source_id: TIKTOK_PIXEL_ID, // MUDANÇA IMPORTANTE (antes era pixel_code)
-
-        // Formato para envio em lote (Array de eventos)
+        event_source: 'web',
+        event_source_id: TIKTOK_PIXEL_ID,
         data: [
             {
                 event: 'ViewContent',
@@ -36,12 +34,20 @@ async function runTest() {
                     currency: 'BRL',
                     value: 10.00,
                     content_type: 'product',
-                    content_id: 'test-product-1',
+                    contents: [
+                        {
+                            content_id: 'test-product-1',
+                            content_name: 'Test Product',
+                            quantity: 1
+                        }
+                    ]
+                },
+                page: {
                     url: 'https://sinaldouniverso.netlify.app'
                 }
             }
         ],
-        test_event_code: TEST_EVENT_CODE // Fica fora do data[]
+        test_event_code: TEST_EVENT_CODE
     };
 
     console.log('Payload:', JSON.stringify(payload, null, 2));

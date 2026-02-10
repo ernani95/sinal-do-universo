@@ -15,7 +15,7 @@ function sha256(data) {
 
 /**
  * Send event to TikTok Events API (Server-Side)
- * Using proven working structure (Batch format with data array)
+ * Matches TikTok Payload Helper structure
  */
 async function sendTikTokEvent(eventData, testEventCode = null) {
     if (!TIKTOK_ACCESS_TOKEN) {
@@ -42,17 +42,33 @@ async function sendTikTokEvent(eventData, testEventCode = null) {
             ...(eventData.properties || {}),
         };
 
-        if (eventData.page_url && !properties.url) {
-            properties.url = eventData.page_url;
+        // Ensure contents array structure if content_id/type/name are present at top level or properties
+        // This maps our internal simplified structure to TikTok's nested contents structure
+        if ((eventData.content_id || eventData.content_name || eventData.content_category) && !properties.contents) {
+            properties.contents = [{
+                content_id: eventData.content_id,
+                content_name: eventData.content_name,
+                content_category: eventData.content_category,
+                quantity: 1
+            }];
         }
 
-        // Construct Event Object
+        // Add top-level property fields if passed in eventData (mapping flat to properties)
+        if (eventData.currency) properties.currency = eventData.currency;
+        if (eventData.value) properties.value = eventData.value;
+        if (eventData.content_type) properties.content_type = eventData.content_type;
+        if (eventData.status) properties.status = eventData.status;
+
+        // Construct Event Object matching Payload Helper JSON structure
         const eventObject = {
             event: eventData.event_name,
             event_id: eventData.event_id || `evt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
             event_time: Math.floor(Date.now() / 1000),
             user: userData,
-            properties: properties
+            properties: properties,
+            page: {
+                url: eventData.page_url || 'https://sinaldouniverso.netlify.app'
+            }
         };
 
         // Construct Final Batch Payload
@@ -105,17 +121,15 @@ async function testTikTokEventsAPI(testEventCode) {
         user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         ip: '127.0.0.1',
         page_url: 'https://sinaldouniverso.netlify.app/test-page',
-        properties: {
-            currency: 'BRL',
-            value: 0,
-            status: 'complete',
-            content_type: 'product',
-            content_name: 'Tarot Reading Lead Form'
-        },
+        // Flat properties that will be mapped to nested structure
+        currency: 'BRL',
+        value: 0,
+        status: 'complete',
+        content_type: 'product',
+        content_name: 'Tarot Reading Lead Form',
         user: {
-            // Hashed email example
             email: sha256('test@example.com'),
-            phone_number: sha256('5511999999999')
+            phone_number: sha256('5511999999999') // API uses 'phone' but we map from 'phone_number' internally if needed
         }
     };
 
