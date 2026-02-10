@@ -16,6 +16,7 @@ app.use(express.json());
 const supabase = require('./db');
 const amplopay = require('./amplopayService');
 const { generateInterpretation } = require('./geminiService');
+const { testTikTokEventsAPI } = require('./tiktokEventsService');
 
 // Routes
 // 1. Health Check
@@ -224,6 +225,37 @@ app.get('/api/readings/:id/result', async (req, res) => {
     } catch (error) {
         console.error('❌ Error in result endpoint:', error);
         res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
+
+// 6. TikTok Events API Test Endpoint
+app.post('/api/tiktok/test-event', async (req, res) => {
+    try {
+        const { testEventCode } = req.body;
+
+        if (!testEventCode) {
+            return res.status(400).json({
+                success: false,
+                error: 'testEventCode is required'
+            });
+        }
+
+        console.log('🧪 Testing TikTok Events API with code:', testEventCode);
+
+        const result = await testTikTokEventsAPI(testEventCode);
+
+        res.json({
+            success: true,
+            message: 'Test event sent successfully',
+            result: result
+        });
+    } catch (error) {
+        console.error('❌ TikTok test error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message,
+            details: error.response?.data
+        });
     }
 });
 
