@@ -157,7 +157,7 @@ const TarotForm = () => {
             console.error("❌ Erro na API (init):", error);
             const errorMessage = error.response?.data?.error || error.message;
             const fullUrl = `${API_BASE_URL}/api/readings/init`;
-            alert(`Erro ao conectar com o serviço astral: ${errorMessage}\n\nURL tentada: ${fullUrl}\n\nPor favor, verifique se a VITE_API_URL está correta no Netlify.`);
+            alert(`Erro ao conectar com o serviço astral: ${errorMessage}\n\nURL tentada: ${fullUrl}\n\nPor favor, verifique se a VITE_API_URL está correta nas configurações do servidor.`);
         }
     };
 
